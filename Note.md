@@ -1,5 +1,5 @@
 # 一、什么是原型链 
- [原型对象](https://blog.csdn.net/ylwdi/article/details/82805255)
+ [原型对象](https://blog.csdn.net/u012468376/article/details/53121081)
  ## 1.1函数的原型对象
  
  在JavaScript中，我们创建一个函数A(就是声明一个函数), 那么浏览器就会在内存中创建一个对象B，而且每个函数都默认会有一个属性 prototype 指向了这个对象( 即：prototype的属性的值是这个对象 )。这个对象B就是函数A的原型对象，简称函数的原型。这个原型对象B 默认会有一个属性 constructor 指向了这个函数A ( 意思就是说：constructor属性的值是函数A )。
