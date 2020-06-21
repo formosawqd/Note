@@ -314,6 +314,6 @@ prototype 存在于构造函数中 (其实任意函数中都有，只是不是�
 * 组合模式和动态原型模式是JavaScript中使用比较多的两种创建对象的方式。
 * 建议以后使用动态原型模式。他解决了组合模式的封装不彻底的缺点。
 
- ###       我们调用constructor属性，p.___proto__.__proto__.constructor得到拥有多个参数的Object()函数，Person.prototype的隐式原型的constructor指向Object()，即Person.prototype.__proto__.constructor == Object()
+ ###      我们调用constructor属性，p.___proto__.__proto__.constructor得到拥有多个参数的Object()函数，Person.prototype的隐式原型的constructor指向Object()，即Person.prototype.__proto__.constructor == Object()
 
- ###       从p.__proto__.constructor返回的结果为构造函数本身得到Person.prototype.constructor == Person()所以p.___proto__.__proto__== Object.prototype                  p是一个实例
+  ###        从p.__proto__.constructor返回的结果为构造函数本身得到Person.prototype.constructor == Person()所以p.___proto__.__proto__== Object.prototype  p是一个实例
