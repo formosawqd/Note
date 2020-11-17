@@ -18,3 +18,4 @@
 18. 第一次页面加载会触发哪几个钩子？第一次页面加载时会触发 beforeCreate, created, beforeMount, mounted 这几个钩子
 19. DOM 渲染在 哪个周期中就已经完成？DOM 渲染在 mounted 中就已经完成了。
 20. 简单描述每个周期具体适合哪些场景？生命周期钩子的一些使用方法： beforecreate : 可以在这加个loading事件，在加载实例时触发 created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用 mounted : 挂载元素，获取到DOM节点 updated : 如果对数据统一处理，在这里写上相应函数 beforeDestroy : 可以做一个确认停止事件的确认框 nextTick : 更新数据后立即操作dom
+21. Vue生命周期中mounted和created的区别  created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图 , mounted:在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
