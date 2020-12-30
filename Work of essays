@@ -11,3 +11,5 @@
 是调用的时候没有注意，调方法的这个对象变了，变成了字符串，那么就会报这种错，所以一般在调用方法的时候，一般事先会判断一下对象是否存在或者类型，不然就会报这种错。
 6. autoprefixer这个加浏览器前缀的插件，配置好了，npm run build的时候，出现了问题，结果是因为在配置浏览器的那里出了问题，还有就是vue脚手架建项目的时候，就已经安装
 了autoprefixer这个的，只是没有启用，所以只需要在vue.config.js里面配置一下就行了
+7. axios默认的content-type是application/json,network里面是这种形式：{  name:xxx, age:xxx }， 而application/x-www-form-urlencoded这种是formdata这种形式：name:xxx, age:xxx，要看后端
+需要的是哪种，如果要formdata的形式传参，那就需要QS来系列化，否则就可以不用QS
