@@ -1,1 +1,2 @@
 1. 手写call  ![image-20210525222239849](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210525222239849.png)
+2. ![image-20210530171122230](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210530171122230.png)
