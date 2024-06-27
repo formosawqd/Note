@@ -98,5 +98,5 @@
 83. 节流：节流的原理是如果有定时器，就return，不阻止上一次的定时器，这样才能让一段时间内，固定频率的执行
 84. iframe 系统之间通信，如果是嵌套的iframe，那么window.parent就是父页面，window.child就是嵌套的子页面，父页面给子页面发消息，window.child.postMessage(),子页面向父页面发消息，window.parent.postMessage(),如果当前页面监听到了其他页面的消息，要给发送消息的那个页面发消息，就是e.source.postMessage(),要注意勇iframe嵌套的时候，是否把iframe隐藏了，这里有些坑，比如隐藏的那个iframe里面的log打印展不开，请求也看不到响应
 85. 如股在页面中要循环渲染echarts，那么此时要注意的就是init echarts的时候，需要勇refs来获取dom,而不是用id来获取，id获取的话，都只会获取到第一个id的dom.这样就有问题了，用refs就不会，因为每个组件都是独立的，就不会有这种问题
-86. 
+86. 怪异盒模型就是width包括content,padding,border，也就是设置border-box的时候，标准的盒模型就是width包括conent，想象一个盒子，里面就只有padding,border以及内容，就很清楚盒模型了
 
