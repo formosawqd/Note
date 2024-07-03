@@ -1,7 +1,0 @@
-1. 手写call  ![image-20210525222239849](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210525222239849.png)
-2. ![image-20210530171122230](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210530171122230.png)
-3. ![image-20210530195648800](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210530195648800.png)
-4. ![image-20210530200444886](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210530200444886.png)
-5. ![image-20210530210702846](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210530210702846.png)
-6. ![image-20210530210858163](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210530210858163.png)
-7. ![image-20210530211445744](C:\Users\mi\AppData\Roaming\Typora\typora-user-images\image-20210530211445744.png)
