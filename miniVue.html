@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MiniVue 选项式 API 实现</title>
+  </head>
+  <body>
+    <div id="app">
+      <p>当前计数：{{ count }}</p>
+      <p>双倍计数：{{ doubleCount }}</p>
+      <button @click="increment">增加</button>
+      <button @click="decrement">减少</button>
+    </div>
+
+    <script>
+      // MiniVue 核心类
+      class MiniVue {
+        constructor(options) {
+          // console.log(options);
+
+          this.$options = options; // 存储 Vue 选项
+          this.$data = options.data ? options.data() : {}; // 调用 data() 获取数据
+          this.$methods = options.methods || {}; // 存储 methods 方法
+          this.$computed = options.computed || {}; // 存储 computed 计算属性
+          this.$el = document.querySelector(options.el); // 获取挂载的 DOM 元素
+
+          // 让 data 变成响应式
+          this.observe(this.$data);
+
+          // 代理 data 到 Vue 实例上，支持 `this.count` 直接访问 `this.$data.count`
+          Object.keys(this.$data).forEach((key) => {
+            Object.defineProperty(this, key, {
+              get: () => this.$data[key], // 代理 getter
+              set: (val) => (this.$data[key] = val), // 代理 setter
+            });
+          });
+
+          // 初始化计算属性 computed
+          this.initComputed();
+
+          // 绑定 methods 到 Vue 实例，使 `this.increment()` 可用
+          Object.keys(this.$methods).forEach((method) => {
+            this[method] = this.$methods[method].bind(this);
+          });
+
+          // 解析模板并渲染
+          this.compile(this.$el);
+        }
+
+        // 使 data 响应式
+        observe(obj) {
+          console.log(obj);
+          Object.keys(obj).forEach((key) => {
+            let value = obj[key]; // 获取属性值
+            const dep = new Dep(); // 依赖管理器
+
+            Object.defineProperty(obj, key, {
+              get() {
+                if (Dep.target) dep.addDep(Dep.target); // 收集依赖
+                return value;
+              },
+              set(newVal) {
+                if (value !== newVal) {
+                  value = newVal;
+                  dep.notify(); // 数据变更时，通知所有依赖更新
+                }
+              },
+            });
+          });
+        }
+
+        // 初始化 computed 计算属性
+        initComputed() {
+          Object.keys(this.$computed).forEach((key) => {
+            Object.defineProperty(this, key, {
+              get: () => this.$computed[key].call(this), // 计算属性执行时，自动获取 this 上的数据
+            });
+          });
+        }
+
+        // 解析模板（查找 {{}} 并替换数据，同时监听变化）
+        compile(el) {
+          const nodes = el.childNodes; // 获取所有子节点
+
+          nodes.forEach((node) => {
+            if (node.nodeType === 3) {
+              // 文本节点
+              const text = node.nodeValue;
+              const reg = /\{\{(.*?)\}\}/g; // 匹配 {{ count }}
+              if (reg.test(text)) {
+                this.updateText(node, text); // 更新文本
+              }
+            }
+
+            if (node.nodeType === 1) {
+              // 元素节点（解析事件）
+              const attrs = node.attributes;
+              Array.from(attrs).forEach((attr) => {
+                if (attr.name.startsWith("@")) {
+                  // 解析 @click 事件
+                  const eventType = attr.name.slice(1); // 取出事件类型 "click"
+                  const methodName = attr.value; // 取出方法名 "increment"
+                  node.addEventListener(eventType, this[methodName].bind(this)); // 绑定事件
+                }
+              });
+            }
+
+            if (node.childNodes.length) {
+              // 递归编译子节点
+              this.compile(node);
+            }
+          });
+        }
+
+        // 更新文本节点
+        updateText(node, text) {
+          text.replace(/\{\{(.*?)\}\}/g, (_, exp) => {
+            exp = exp.trim(); // 去掉首尾空格，获取变量名
+            node.nodeValue = text.replace(/\{\{(.*?)\}\}/g, this[exp]); // 初次填充数据
+            new Watcher(this, exp, (newVal) => {
+              node.nodeValue = text.replace(/\{\{(.*?)\}\}/g, newVal); // 数据变化时，更新 UI
+            });
+          });
+        }
+      }
+
+      // 依赖管理器（Dep），用于收集 Watcher
+      class Dep {
+        constructor() {
+          this.subs = []; // 存储依赖
+        }
+
+        addDep(watcher) {
+          this.subs.push(watcher); // 添加依赖
+        }
+
+        notify() {
+          this.subs.forEach((watcher) => watcher.update()); // 数据变化时，触发 Watcher 更新 UI
+        }
+      }
+
+      // 观察者（Watcher），当数据更新时，执行回调
+      class Watcher {
+        constructor(vm, key, callback) {
+          this.vm = vm;
+          this.key = key;
+          this.callback = callback;
+
+          Dep.target = this; // 让 Dep 知道当前 Watcher
+          this.value = vm[key]; // 触发 getter 进行依赖收集
+          Dep.target = null; // 依赖收集完成后，清空
+        }
+
+        update() {
+          const newVal = this.vm[this.key]; // 获取最新的值
+          if (this.value !== newVal) {
+            // 只有值变化时才更新
+            this.value = newVal;
+            this.callback(newVal); // 执行回调，更新 UI
+          }
+        }
+      }
+
+      // 创建 MiniVue 实例
+      const app = new MiniVue({
+        el: "#app", // 绑定到 #app
+        data() {
+          return { count: 0 }; // data 数据
+        },
+        computed: {
+          doubleCount() {
+            return this.count * 2; // 计算属性
+          },
+        },
+        methods: {
+          increment() {
+            this.count++; // 增加 count
+          },
+          decrement() {
+            this.count--; // 减少 count
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
+
+<!-- 🌟 代码解析
+1. Vue 选项式 API 实现
+✅ data() → this.$data（响应式）
+✅ computed → 计算属性，自动更新
+✅ methods → 绑定到 this 上，支持 @click 事件
+✅ el → 查找 DOM 并解析 {{ count }}
+
+2. 数据响应式
+observe() 拦截 data 的 get 和 set
+Dep 负责管理依赖
+Watcher 监听数据变化，更新 UI
+3. 模板解析
+匹配 {{ count }} 并替换成 this.count 的值
+自动监听数据变化，动态更新
+4. 事件绑定
+@click="increment" 解析为 this.increment() -->
