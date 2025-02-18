@@ -1,33 +1,69 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue key 错误示例</title>
+  </head>
+  <body>
+    <div id="app">
+      <ul>
+        <li v-for="(item, index) in items" :key="index">{{ item }}</li>
+      </ul>
+
+      <button @click="shuffleItems">Shuffle</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          items: ["Apple", "Banana", "Cherry"],
+        },
+        methods: {
+          shuffleItems() {
+            this.items = this.items.sort(() => Math.random() - 0.5);
+          },
+        },
+      });
+    </script>
+  </body>
+</html> 
+-->
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue key 正确示例</title>
+  </head>
   <body>
-    <ul>
+    <div id="app">
       <ul>
-        <!-- 定义路由 -->
-        <li><a href="#/home">home</a></li>
-        <li><a href="#/about">about</a></li>
-
-        <!-- 渲染路由对应的 UI -->
-        <div id="routeView"></div>
+        <li v-for="item in items" :key="item.id">{{ item.name }}</li>
       </ul>
-    </ul>
+
+      <button @click="shuffleItems">Shuffle</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          items: [
+            { id: 1, name: "Apple" },
+            { id: 2, name: "Banana" },
+            { id: 3, name: "Cherry" },
+          ],
+        },
+        methods: {
+          shuffleItems() {
+            this.items = this.items.sort(() => Math.random() - 0.5);
+          },
+        },
+      });
+    </script>
   </body>
-  <script>
-    let routerView = routeView; //直接获取到id = routeView 的这个div
-    window.addEventListener("hashchange", () => {
-      let hash = location.hash;
-      console.log(hash);
-      routerView.innerHTML = hash;
-    });
-    window.addEventListener("DOMContentLoaded", () => {
-      if (!location.hash) {
-        //如果不存在hash值，那么重定向到#/
-        location.hash = "/";
-      } else {
-        //如果存在hash值，那就渲染对应UI
-        let hash = location.hash;
-        routerView.innerHTML = hash;
-      }
-    });
-  </script>
 </html>

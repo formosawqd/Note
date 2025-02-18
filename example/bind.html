@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      Function.prototype.myBind = function (context, ...args) {
+        // 保存当前函数的引用
+        console.log(this); // greet 这个函数
+        const fn = this;
+        // 返回一个新的函数
+        return function (...newArgs) {
+          // 使用 apply 来调用原函数，并传入绑定的上下文和所有参数
+          return fn.apply(context, args.concat(newArgs));
+        };
+      };
+      function greet(greeting, punctuation) {
+        return `${greeting}, ${this.name}${punctuation}`;
+      }
+
+      const person = { name: "John" };
+
+      // 使用原生 bind
+      const boundGreet1 = greet.bind(person, "Hello");
+      console.log(boundGreet1("!")); // 输出：Hello, John!
+
+      // 使用手写的 myBind
+      const boundGreet2 = greet.myBind(person, "Hello");
+      console.log(boundGreet2("!")); // 输出：Hello, John!
+    </script>
+  </body>
+</html>

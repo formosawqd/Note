@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body></body>
+  <script>
+    // 就是把传入的 promise 数组循环执行，根据循环的 index 来放入一个数组里面，判断 promise 数组的个数和 count 计数器是否相等，相等就说明执行完了，就返回最新的数组
+    function myPromiseAll(promises) {
+      return new Promise((resolve, reject) => {
+        // 1. 检查参数是否为数组
+        if (!Array.isArray(promises)) {
+          return reject(new TypeError("Argument must be an array"));
+        }
+
+        // 2. 初始化存储结果的数组
+        let results = [];
+        // 3. 记录完成的 Promise 数量
+        let completed = 0;
+        // 4. 获取 Promise 数组的总长度
+        let total = promises.length;
+
+        // 5. 处理空数组情况，立即 resolve 空数组
+        if (total === 0) {
+          return resolve([]);
+        }
+
+        // 6. 遍历传入的 Promise 数组
+        promises.forEach((promise, index) => {
+          // 7. 确保传入的值都被转换成 Promise，防止传入非 Promise 值
+          Promise.resolve(promise)
+            .then((value) => {
+              // 8. 将成功的结果存入 results 数组
+              results[index] = value;
+              // 9. 计数器 +1，表示一个 Promise 成功
+              completed++;
+              // 10. 当所有 Promise 都完成时，resolve 结果
+              if (completed === total) {
+                resolve(results);
+              }
+            })
+            .catch((error) => {
+              // 11. 只要有一个 Promise 失败，就立即 reject
+              reject(error);
+            });
+        });
+      });
+    }
+
+    const p1 = Promise.resolve(1);
+    const p2 = new Promise((resolve) => setTimeout(() => resolve(2), 1000));
+    const p3 = new Promise((resolve) => setTimeout(() => resolve(3), 2000));
+    const p4 = Promise.reject("Error in p4");
+
+    myPromiseAll([p1, p2, p3])
+      .then((res) => console.log("成功:", res)) // [1, 2, 3] （约 2s 后返回）
+      .catch((err) => console.error("失败:", err));
+
+    myPromiseAll([p1, p2, p4])
+      .then((res) => console.log("成功:", res))
+      .catch((err) => console.error("失败:", err)); // "Error in p4" 立即返回
+  </script>
+</html>

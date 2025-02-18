@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手写 nextTick（兼容 Promise 和 MutationObserver）</title>
+  </head>
+  <body>
+    <h2 id="text">原始文本</h2>
+    <button onclick="updateText()">更新文本</button>
+
+    <script>
+      // ========== nextTick 实现 ==========
+      //   就是利用事件循环机制，把回调函数放到了同步执行代码之后
+      function nextTick(callback) {
+        if (typeof Promise !== "undefined") {
+          // 1️⃣ 现代浏览器，优先使用 Promise 微任务
+          Promise.resolve().then(callback);
+        } else if (typeof MutationObserver !== "undefined") {
+          // 2️⃣ 兼容 MutationObserver（Vue 2 采用此方案）
+          const observer = new MutationObserver(callback);
+          const textNode = document.createTextNode("nextTick");
+          observer.observe(textNode, { characterData: true });
+          textNode.data = "tick"; // 触发回调
+        } else {
+          // 3️⃣ 兜底方案：setTimeout（宏任务）
+          setTimeout(callback, 0);
+        }
+      }
+
+      // ========== 测试 nextTick ==========
+      function updateText() {
+        const textElement = document.getElementById("text");
+
+        // 立即修改文本内容
+        textElement.innerText = "修改后的文本";
+
+        // nextTick 确保 DOM 更新后执行
+        nextTick(() => {
+          console.log("DOM 更新后执行的回调:", textElement.innerText);
+        });
+
+        // 立即打印，验证 nextTick 运行顺序
+        console.log("同步执行的日志:", textElement.innerText);
+      }
+    </script>
+  </body>
+</html>

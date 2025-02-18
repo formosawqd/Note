@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>边距坍塌解决方案</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: lightcoral;
+        margin-bottom: 20px; /* 设置底部边距，测试边距坍塌 */
+      }
+
+      /* 方案 1: 使用 border 来解决边距坍塌 */
+      .box-with-border {
+        border: 1px solid transparent; /* 透明边框，防止边距坍塌 */
+        margin-bottom: 20px;
+      }
+
+      /* 方案 2: 使用 padding 来解决边距坍塌 */
+      .box-with-padding {
+        padding-bottom: 20px; /* 内边距阻止边距坍塌 */
+      }
+
+      /* 方案 3: 使用 overflow 来解决边距坍塌 */
+      .box-with-overflow {
+        overflow: hidden; /* 添加 overflow 防止边距坍塌 */
+        margin-bottom: 20px;
+      }
+
+      /* 防止父子元素之间的边距坍塌 */
+      .parent {
+        background-color: lightblue;
+        margin-bottom: 40px; /* 设置父元素与子元素之间的边距 */
+      }
+      .child {
+        margin-top: 20px; /* 子元素顶部边距 */
+      }
+    </style>
+  </head>
+  <body>
+    <h2>测试边距坍塌和解决方案</h2>
+
+    <!-- 普通盒子，观察边距坍塌 -->
+    <div class="box"></div>
+    <div class="box"></div>
+
+    <h3>方案 1: 使用 Border 防止边距坍塌</h3>
+    <div class="box-with-border"></div>
+    <div class="box-with-border"></div>
+
+    <h3>方案 2: 使用 Padding 防止边距坍塌</h3>
+    <div class="box-with-padding"></div>
+    <div class="box-with-padding"></div>
+
+    <h3>方案 3: 使用 Overflow 防止边距坍塌</h3>
+    <div class="box-with-overflow"></div>
+    <div class="box-with-overflow"></div>
+
+    <h3>父子元素之间的边距坍塌问题</h3>
+    <div class="parent">
+      <div class="child">父子元素之间的边距问题</div>
+    </div>
+  </body>
+</html>
