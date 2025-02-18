@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let arr = [1, 2, 3, 4, 5];
+      Array.prototype.myForEach = function (cb) {
+        // cb: callback
+        console.log(this);
+        // this: arr
+        for (let i = 0; i < this.length; i++) {
+          cb(this[i], i, this);
+        }
+      };
+
+      arr.myForEach((el, i, arr) => {
+        console.log(el * 2);
+      });
+    </script>
+  </body>
+</html>

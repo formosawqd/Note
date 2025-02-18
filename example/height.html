@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll 属性示例</title>
+    <style>
+      #container {
+        height: 200px;
+        /* 容器的可视高度 */
+        width: 100%;
+        overflow-y: scroll;
+        /* 允许垂直滚动 */
+        border: 1px solid #ccc;
+        scrollbar-width: thin;
+        /* 对于 Firefox */
+      }
+
+      #container::-webkit-scrollbar {
+        width: 12px;
+        /* 对于 Chrome, Safari 和 Opera */
+      }
+
+      #container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      #container::-webkit-scrollbar-thumb {
+        background: #888;
+      }
+
+      #container::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      #content {
+        height: 600px;
+        /* 内容的总高度大于容器高度 */
+        width: 100%;
+        background: linear-gradient(lightblue, lightgreen);
+        /* 渐变背景色 */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="content"></div>
+    </div>
+
+    <button onclick="logScrollInfo()">输出滚动信息</button>
+
+    <script>
+      function logScrollInfo() {
+        const container = document.querySelector("#container");
+        console.log("clientHeight:", container.clientHeight); //200
+        console.log("scrollHeight:", container.scrollHeight); //600
+        console.log("scrollTop:", container.scrollTop); // 0
+      }
+
+      // 在页面加载完成后初始输出滚动信息
+      document.addEventListener("DOMContentLoaded", logScrollInfo);
+
+      // 当滚动事件发生时输出滚动信息
+      document
+        .querySelector("#container")
+        .addEventListener("scroll", logScrollInfo);
+
+      // 解释
+      let clientHeight = document.documentElement.clientHeight; //浏览器高度，指的是设置overflow的那个元素，就是外层那个元素
+      let scrollHeight = document.body.scrollHeight; //实际上要滚动的那个元素的高度
+      let scrollTop = document.documentElement.scrollTop; //滚动条上方的那段距离
+      // scrollTop + clientHeight >= scrollHeight
+
+      let distance = 50; //距离视窗还用50的时候，开始触发；
+
+      if (scrollTop + clientHeight >= scrollHeight - distance) {
+        console.log("开始加载数据");
+      }
+    </script>
+  </body>
+</html>

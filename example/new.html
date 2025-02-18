@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function myNew(constructor, ...args) {
+        console.log(args);
+        // 创建一个空对象，并将其原型链接到构造函数的原型
+        const obj = Object.create(constructor.prototype);
+
+        // 调用构造函数，将 this 绑定到新创建的对象
+        const result = constructor.apply(obj, args);
+
+        // 如果构造函数返回一个对象，则返回该对象，否则返回新创建的对象
+        return typeof result === "object" && result !== null ? result : obj;
+      }
+      function Person(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+
+      const person1 = myNew(Person, "Alice", 30);
+      console.log(person1); // 输出: Person { name: 'Alice', age: 30 }
+
+      const person2 = new Person("Bob", 25);
+      console.log(person2); // 输出: Person { name: 'Bob', age: 25 }
+
+      // 比较手写的 myNew 与原生 new 的结果
+      console.log(person1 instanceof Person); // 输出: true
+      console.log(person2 instanceof Person); // 输出: true
+    </script>
+  </body>
+</html>

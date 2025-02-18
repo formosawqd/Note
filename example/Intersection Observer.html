@@ -1,0 +1,166 @@
+<!-- 方法1 推荐 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intersection Observer Example</title>
+  </head>
+
+  <body>
+    <div style="height: 1500px; background-color: lightblue">
+      Scroll down to see the element
+    </div>
+    <div id="yourElementId" style="height: 100px; background-color: coral">
+      Watch me!
+    </div>
+    <div style="height: 1500px; background-color: lightgreen"></div>
+
+    <script>
+      // 创建一个 Intersection Observer
+      const eleObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            console.log("元素在窗口内");
+          } else {
+            console.log("元素不在窗口内");
+          }
+        });
+      });
+
+      // 选择要观察的元素
+      const element = document.querySelector("#yourElementId");
+
+      // 开始观察元素
+      eleObserver.observe(element);
+    </script>
+  </body>
+</html>
+
+方法二 不是很推荐
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>元素视口检查</title>
+    <style>
+      #myElement {
+        height: 100px;
+        width: 100px;
+        background-color: lightblue;
+        margin-top: 150vh;
+        /* 将元素放在视口之外，您可以调整 */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="myElement">测试元素</div>
+
+    <script>
+      function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+
+        return (
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <=
+            (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.right <=
+            (window.innerWidth || document.documentElement.clientWidth)
+        );
+      }
+
+      window.addEventListener("DOMContentLoaded", (event) => {
+        const myElement = document.querySelector("#myElement");
+        if (isElementInViewport(myElement)) {
+          console.log("元素在窗口内");
+        } else {
+          console.log("元素不在窗口内");
+        }
+      });
+
+      // 监听滚动事件
+      window.addEventListener("scroll", () => {
+        const myElement = document.querySelector("#myElement");
+        if (isElementInViewport(myElement)) {
+          console.log("元素在窗口内");
+        } else {
+          console.log("元素不在窗口内");
+        }
+      });
+    </script>
+  </body>
+</html>
+
+方法三 不推荐
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>元素视口检查</title>
+    <style>
+      #container {
+        height: 100vh; /* 设置容器高度为视口高度 */
+        overflow-y: scroll; /* 使容器可以垂直滚动 */
+        border: 1px solid #ccc; /* 给容器添加边框 */
+      }
+      #spacer {
+        height: 150vh; /* 占位元素的高度大于视口高度，使myElement初始在视口外 */
+      }
+      #myElement {
+        height: 100px; /* 设置myElement的高度 */
+        width: 100px; /* 设置myElement的宽度 */
+        background-color: lightblue; /* 设置myElement的背景颜色 */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="spacer"></div>
+      <!-- 占位元素，将myElement放置在视口外 -->
+      <div id="myElement">测试元素</div>
+      <!-- 需要检测的元素 -->
+    </div>
+
+    <script>
+      // 判断元素是否在视口内的函数
+      function isElementInViewport(el) {
+        const container = document.querySelector("#container"); // 获取滚动容器
+        const elementTop = el.offsetTop; // 元素的顶部相对于其 offsetParent 的距离
+        const elementBottom = elementTop + el.offsetHeight; // 元素的底部相对于其 offsetParent 的距离
+
+        const containerScrollTop = container.scrollTop; // 容器的滚动距离
+        const containerBottom = containerScrollTop + container.clientHeight; // 容器底部相对于其顶部的距离
+
+        // 判断元素的顶部或底部是否在容器的可视范围内
+        return (
+          elementBottom > containerScrollTop && elementTop < containerBottom
+        );
+      }
+
+      // 当 DOM 内容加载完成后执行
+      document.addEventListener("DOMContentLoaded", () => {
+        const myElement = document.querySelector("#myElement"); // 获取需要检测的元素
+        const container = document.querySelector("#container"); // 获取滚动容器
+
+        // 检查元素是否在视口内并输出结果
+        function checkVisibility() {
+          if (isElementInViewport(myElement)) {
+            console.log("元素在窗口内");
+          } else {
+            console.log("元素不在窗口内");
+          }
+        }
+
+        // 初始检查
+        checkVisibility();
+
+        // 当滚动事件发生时检查元素是否在视口内
+        container.addEventListener("scroll", checkVisibility);
+      });
+    </script>
+  </body>
+</html>
