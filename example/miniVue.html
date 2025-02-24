@@ -17,18 +17,19 @@
       // MiniVue 核心类
       class MiniVue {
         constructor(options) {
-          // console.log(options);
-
           this.$options = options; // 存储 Vue 选项
           this.$data = options.data ? options.data() : {}; // 调用 data() 获取数据
           this.$methods = options.methods || {}; // 存储 methods 方法
           this.$computed = options.computed || {}; // 存储 computed 计算属性
           this.$el = document.querySelector(options.el); // 获取挂载的 DOM 元素
 
+          // 在实例创建之前触发 beforeCreate
+          if (this.$options.beforeCreate) this.$options.beforeCreate.call(this);
+
           // 让 data 变成响应式
           this.observe(this.$data);
 
-          // 代理 data 到 Vue 实例上，支持 `this.count` 直接访问 `this.$data.count`
+          // 代理 data 到 Vue 实例
           Object.keys(this.$data).forEach((key) => {
             Object.defineProperty(this, key, {
               get: () => this.$data[key], // 代理 getter
@@ -44,13 +45,18 @@
             this[method] = this.$methods[method].bind(this);
           });
 
+          // 在实例创建后立即触发 created
+          if (this.$options.created) this.$options.created.call(this);
+
           // 解析模板并渲染
           this.compile(this.$el);
+
+          // 在挂载后触发 mounted
+          if (this.$options.mounted) this.$options.mounted.call(this);
         }
 
         // 使 data 响应式
         observe(obj) {
-          console.log(obj);
           Object.keys(obj).forEach((key) => {
             let value = obj[key]; // 获取属性值
             const dep = new Dep(); // 依赖管理器
@@ -181,24 +187,16 @@
             this.count--; // 减少 count
           },
         },
+        beforeCreate() {
+          console.log("beforeCreate 生命周期钩子");
+        },
+        created() {
+          console.log("created 生命周期钩子");
+        },
+        mounted() {
+          console.log("mounted 生命周期钩子");
+        },
       });
     </script>
   </body>
 </html>
-
-<!-- 🌟 代码解析
-1. Vue 选项式 API 实现
-✅ data() → this.$data（响应式）
-✅ computed → 计算属性，自动更新
-✅ methods → 绑定到 this 上，支持 @click 事件
-✅ el → 查找 DOM 并解析 {{ count }}
-
-2. 数据响应式
-observe() 拦截 data 的 get 和 set
-Dep 负责管理依赖
-Watcher 监听数据变化，更新 UI
-3. 模板解析
-匹配 {{ count }} 并替换成 this.count 的值
-自动监听数据变化，动态更新
-4. 事件绑定
-@click="increment" 解析为 this.increment() -->
