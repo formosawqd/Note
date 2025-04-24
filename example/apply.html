@@ -8,24 +8,26 @@
   <body>
     <script>
       Function.prototype.myApply = function (context, args) {
-        console.log(this);
+        // console.log(this);
         // 如果 context 为空或 null，默认上下文为全局对象（在浏览器中是 window，在 Node.js 中是 global）
-        console.log(context);
+        // console.log(context);
         context = context || globalThis;
-        console.log(context);
+        // console.log(context);
         // 创建一个唯一的属性名，以防止覆盖 context 上的已有属性
         const uniqueSymbol = Symbol();
-        console.log(uniqueSymbol);
+        // console.log(uniqueSymbol);
         // 将当前函数（即 this）作为 context 对象的一个属性
         context[uniqueSymbol] = this;
+        console.log(...args);
 
-        console.log(context);
+        // console.log(context);
+        console.log(context[uniqueSymbol]);
         // 使用 context 对象调用这个函数，并传入 args 数组
         const result = context[uniqueSymbol](...args); //这里相当于就是person.greet(...args) 所以greet方法里面的this就是person
-        console.log(result);
+        // console.log(result);
         // 删除临时属性
         delete context[uniqueSymbol];
-        console.log(context);
+        // console.log(context);
 
         // 返回函数调用的结果
         return result;
@@ -38,12 +40,20 @@
       const person = { name: "John" };
 
       // 使用原生 apply
-      const result1 = greet.apply(person, ["Hello", "!"]);
-      console.log(result1); // 输出：Hello, John!
+      // const result1 = greet.apply(person, ["Hello", "!"]);
+      // console.log(result1); // 输出：Hello, John!
 
       // 使用手写的 myApply
       const result2 = greet.myApply(person, ["Hello", "!"]);
-      console.log(result2); // 输出：Hello, John!
+      // console.log(result2); // 输出：Hello, John!
+
+      // 通俗易懂的中文解释一下这个函数的实现原理：
+      // 1. 首先，检查传入的上下文 context 是否为空或 null，如果是，则将其设置为全局对象（在浏览器中是 window，在 Node.js 中是 global）。
+      // 2. 然后，创建一个唯一的属性名（使用 Symbol），以防止覆盖 context 对象上已有的属性。
+      // 3. 将当前函数（即 this）作为 context 对象的一个属性，使用刚才创建的唯一属性名。
+      // 4. 使用 context 对象调用这个函数，并传入 args 数组，这样就可以在指定的上下文中执行函数。
+      // 5. 删除临时属性，以清理上下文对象，避免污染。
+      // 6. 最后，返回函数调用的结果。
     </script>
   </body>
 </html>

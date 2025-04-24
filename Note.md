@@ -1,10 +1,10 @@
-1. 前端模块化：为了更好的处理得到想要的数据，将数据放在一个 js 文件里，commonJS 是把这个 js 文件导出，在这个 js 文件里用 module.exports 来导出。在想要引用的地方用 require 来引入，在 require 的时候还可以结构出来
+1. 前端模块化：为了更好的处理得到想要的数据，将数据放在一个 js 文件里，commonJS 是把这个 js 文件导出，在这个 js 文件里用 module.exports 来导出。在想要引用的地方用 require 来引入，在 require 的时候还可以解构出来
 2. 函数的 this 指向，指向定义时的执行上下文，或者就是指向外层代码执行上下文
-3. 重的 set 用法： let arr = [1, 2, 3, 4, 6, 3, 6, 7,7, 7, 2, 45, 6]; let newArr = new Set(arr) 得到结果[1, 2, 3, 4, 6, 7, 45]
+3. 去重的 set 用法： let arr = [1, 2, 3, 4, 6, 3, 6, 7,7, 7, 2, 45, 6]; let newArr = new Set(arr) 得到结果[1, 2, 3, 4, 6, 7, 45]
 4. let o = "formosa"; console.log(Object.prototype.toString.bind(o)()); 打印结果：[object String] bind 只能改变 this,不会执行，如果换成 call,apply 就可以省略后面的括号
 5. 作用域链: 保存一个函数所有可用的作用域对象的链式结构(好友列表)学名就叫作用域链
 6. 闭包形成的原因: 外层函数调用后，外层函数的作用域对象被内层函数引用着无法释放，形成了闭包对象
-7. 作用域 用途: 一个变量的可用范围 本质: 也是一个专门保存变量的对象
+7. 作用域 用途: 一个变量的可用范围 本质: 也是一个专门保存变量的对象----作用域就是变量在代码中可以访问的范围。
 8. 清除浮动最常用的是利用伪元素来清除浮动，谁浮动就给谁的父元素加伪元素，给父元素加伪元素其实就是给父元素加第一个儿子或者最后一个儿子，然后将伪元素设置为块级元素，内容为空，再清除浮动， content: "" ; display: block; clear: both;
 9. 因为 js 是单线程运行的，在代码执行的时候，通过将不同函数的执行上下文压入执行栈中来保证代码的有序执行。在执行同步代码的时候，如果遇到了异步事件，js 引擎并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当异步事件执行完毕后，再将异步事件对应的回调加入到与当前执行栈中不同的另一个任务队列中等待执行。任务队列可以分为宏任务对列和 微任务对列，当当前执行栈中的事件执行完毕后，js 引擎首先会判断微任务对列中是否有任务可以执行，如果有就将微任务队首的事件压入栈中执行。当微任务对列中的任务都执行完成后再去判断宏任务对列中的任务。 微任务包括了 promise 的回调、node 中的 process.nextTick 、对 Dom 变化监听的 MutationObserver。 宏任务包括了 script 脚本的执行、setTimeout ，setInterval ，setImmediate 一类的定时事件，还有如 I/O 操作、UI 渲染等。
 10. Pomise.all 的使用：Promise.all 可以将多个 Promise 实例包装成一个新的 Promise 实例。同时，成功和失败的返回值是不同的，成功的时候返回的是一个结果数组，而失败的时候则返回最先被 reject 失败状态的值。
@@ -103,3 +103,5 @@
 87. 文件上传就是用 post，然后把 header 改成 'Content-Type': 'multipart/form-data'，上传的文件用 FormData const formData = new FormData(); formData.append('file', this.file);
 88. vue2 双向绑定原理：new Vue 的时候，首先进行数据劫持，用 Object.defineProperty 将 Vue 里面的 data 数据劫持，然后进行解析，在解析的过程中，会有一个 new Watcher 的操作，这里就会把 watcher 加入到 Dep 的订阅里面，也就是在数据劫持的 get 的时候，在 set 的时候，Dep 会通知 Watcher 去执行对应的 update 方法，两个函数作用：一个 Watcher,自身有一个 update 方法，用来更新数据，一个 Dep 函数,Dep 作用就是将 Watcher 加入到 Dep 的管理列表里面，并且在 set 的时候通知 Watcher 更新数据
 89. 下载最好还是单独写一个下载的方法，不要统一走 get，因为有些许逻辑不一样，单独处理会更好
+90. 在实际应用中，flex: 1 更常用于需要均匀分配剩余空间的情况，而 flex: auto 更适合希望元素尺寸根据内容动态变化的情况
+91. 每个对象的 constructor 属性默认指向创建它的构造函数，每个函数的 prototype 属性指向一个原型对象，而原型对象的 constructor 默认指向该函数本身 console.log(Person.prototype.constructor === Person); // true

@@ -7,18 +7,46 @@
   </head>
   <body>
     <script>
+      Function.prototype.myApply = function (context, args) {
+        console.log(this);
+        // 如果 context 为空或 null，默认上下文为全局对象（在浏览器中是 window，在 Node.js 中是 global）
+        // console.log(context);
+        context = context || globalThis;
+        // console.log(context);
+        // 创建一个唯一的属性名，以防止覆盖 context 上的已有属性
+        const uniqueSymbol = Symbol();
+        // console.log(uniqueSymbol);
+        // 将当前函数（即 this）作为 context 对象的一个属性
+        context[uniqueSymbol] = this;
+        console.log(...args);
+
+        // console.log(context);
+        console.log(context[uniqueSymbol]);
+        // 关键在于这里，这里把调用的函数的this绑定到了context对象上了，也就是obj上，在执行obj上面的这个方法的时候，this就指向了context对象，也就是指向了obj
+        // obj.fn, 这里的fn就是context[uniqueSymbol]，也就是this,fn里面执行的时候，this就指向了obj对象
+        // 使用 context 对象调用这个函数，并传入 args 数组
+        const result = context[uniqueSymbol](...args); //这里相当于就是person.greet(...args) 所以greet方法里面的this就是person
+        // console.log(result);
+        // 删除临时属性
+        delete context[uniqueSymbol];
+        // console.log(context);
+
+        return result;
+      };
+
       function myNew(constructor, ...args) {
         console.log(args);
         // 创建一个空对象，并将其原型链接到构造函数的原型
         const obj = Object.create(constructor.prototype);
 
-        // 调用构造函数，将 this 绑定到新创建的对象
-        const result = constructor.apply(obj, args);
+        // 调用构造函数，将 this 绑定到新创建的对象。这里使用 myApply 方法来实现，更直观看为什么把this绑定到obj上了
+        const result = constructor.myApply(obj, args);
 
         // 如果构造函数返回一个对象，则返回该对象，否则返回新创建的对象
         return typeof result === "object" && result !== null ? result : obj;
       }
       function Person(name, age) {
+        console.log(this);
         this.name = name;
         this.age = age;
       }
@@ -26,12 +54,17 @@
       const person1 = myNew(Person, "Alice", 30);
       console.log(person1); // 输出: Person { name: 'Alice', age: 30 }
 
-      const person2 = new Person("Bob", 25);
-      console.log(person2); // 输出: Person { name: 'Bob', age: 25 }
+      // const person2 = new Person("Bob", 25);
+      // console.log(person2); // 输出: Person { name: 'Bob', age: 25 }
 
       // 比较手写的 myNew 与原生 new 的结果
-      console.log(person1 instanceof Person); // 输出: true
-      console.log(person2 instanceof Person); // 输出: true
+      // console.log(person1 instanceof Person); // 输出: true
+      // console.log(person2 instanceof Person); // 输出: true
+
+      // 通俗易懂的中文解释一下这个函数的实现原理：
+      // 1. 首先，创建一个空对象，并将其原型链接到构造函数的原型，这样新对象就可以访问构造函数的原型方法和属性。
+      // 2. 然后，使用 apply 方法调用构造函数，将 this 绑定到新创建的对象，并传入参数 args。这样就可以在新对象上初始化属性。
+      // 3. 最后，检查构造函数的返回值，如果返回的是一个对象，则返回该对象；否则，返回新创建的对象。这样就可以确保 myNew 函数的行为与原生 new 操作符一致。
     </script>
   </body>
 </html>
