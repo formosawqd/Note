@@ -7,6 +7,11 @@
   </head>
   <body>
     <script>
+      // 解释一下forEach
+      // forEach的作用是遍历数组，执行回调函数，回调函数的参数是当前元素、当前索引和数组本身
+      // forEach的实现原理是使用for循环遍历数组，执行回调函数，回调函数的参数是当前元素、当前索引和数组本身
+      // 这里的forEach函数是一个高阶函数，返回一个新的函数，这个新的函数就是我们要执行的函数，forEach函数的参数是要执行的函数和延迟时间
+
       let arr = [1, 2, 3, 4, 5];
       Array.prototype.myForEach = function (cb) {
         // cb: callback

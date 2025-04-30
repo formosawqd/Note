@@ -163,6 +163,18 @@
         // 当滚动事件发生时检查元素是否在视口内
         container.addEventListener("scroll", checkVisibility);
       });
+
+      // 讲一下clientHeight和offsetHeight的区别
+      // clientHeight: 元素的可见高度，包括内边距，但不包括边框、滚动条和外边距
+      // offsetHeight: 元素的高度，包括边框、内边距和水平滚动条，但不包括外边距
+      // 这两个属性的区别在于，clientHeight不包括边框和外边距，而offsetHeight包括边框和水平滚动条
+      // 这就是为什么我们要使用offsetHeight来计算元素的高度，因为我们需要知道元素的实际高度，而不是可见高度
+      // 另外，offsetTop是元素的顶部相对于其 offsetParent 的距离，而不是相对于视口的距离
+      // 这就是为什么我们要使用offsetTop来计算元素的顶部位置，因为我们需要知道元素的实际位置，而不是相对于视口的位置
+      // 另外，scrollTop是容器的滚动距离，而不是元素的滚动距离
+      // 这就是为什么我们要使用scrollTop来计算容器的滚动距离，因为我们需要知道容器的实际滚动距离，而不是元素的滚动距离
+      // 另外，clientHeight是容器的可视高度，而不是元素的可视高度
+      // 这就是为什么我们要使用clientHeight来计算容器的可视高度，因为我们需要知道容器的实际可视高度，而不是元素的可视高度
     </script>
   </body>
 </html>

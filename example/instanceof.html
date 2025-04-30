@@ -7,6 +7,10 @@
   </head>
   <body>
     <script>
+      // 解释一下instanceof
+      // instanceof的作用是判断一个对象是否是另一个对象的实例，返回true或false
+      // instanceof的实现原理是通过__proto__属性来判断的，__proto__属性指向对象的原型对象，判断一个对象是否是另一个对象的实例，就是判断这个对象的原型链上是否有这个对象的原型
+      // 这里的instanceof函数是一个高阶函数，返回一个新的函数，这个新的函数就是我们要执行的函数，instanceof函数的参数是要执行的函数和延迟时间
       // 就是找右边的原型是否等于左边的原型，一直往上找原型
       function myInstanceof(left, right) {
         //基本数据类型直接返回false

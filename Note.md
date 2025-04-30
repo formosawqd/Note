@@ -105,3 +105,4 @@
 89. 下载最好还是单独写一个下载的方法，不要统一走 get，因为有些许逻辑不一样，单独处理会更好
 90. 在实际应用中，flex: 1 更常用于需要均匀分配剩余空间的情况，而 flex: auto 更适合希望元素尺寸根据内容动态变化的情况
 91. 每个对象的 constructor 属性默认指向创建它的构造函数，每个函数的 prototype 属性指向一个原型对象，而原型对象的 constructor 默认指向该函数本身 console.log(Person.prototype.constructor === Person); // true
+92. 三次握手：“SYN、SYN-ACK、ACK”（你好、你好+收到、好的），四次挥手：“FIN、ACK、FIN、ACK”（我要走了、好的、我也走了、再见）

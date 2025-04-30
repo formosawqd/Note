@@ -9,6 +9,12 @@
   <body>
     <input type="text" id="input" />
     <script>
+      // 解释一下debounce
+      // debounce的作用是防抖，防止函数被频繁调用，比如input输入的时候，input事件会被频繁触发，这里我们希望在输入停止1秒后才执行函数
+      // debounce的实现原理是使用setTimeout来延迟执行函数，如果在延迟时间内又触发了事件，就清除之前的定时器，重新设置一个新的定时器
+      // 这样就可以实现防抖的效果
+      // 这里的debounce函数是一个高阶函数，返回一个新的函数，这个新的函数就是我们要执行的函数，debounce函数的参数是要执行的函数和延迟时间
+
       const input = document.getElementById("input");
       //这里是立刻就执行了debounce这个函数，因此初始化的时候，这里就已经返回了内部的那个函数，因此每次触发input的时候，执行的都是内部的那个函数
       input.addEventListener(
