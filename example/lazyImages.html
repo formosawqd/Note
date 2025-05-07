@@ -3,40 +3,224 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>手写 nextTick（兼容 Promise 和 MutationObserver）</title>
+    <title>懒加载图片示例</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background: #f4f4f4;
+      }
+      .container {
+        width: 90%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .image-wrapper {
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .image-wrapper img {
+        width: 100%;
+        height: auto;
+        background: #ddd;
+        transition: opacity 0.3s ease;
+      }
+    </style>
   </head>
   <body>
+    <div class="container">
+      <h2>懒加载 20 张图片</h2>
+
+      <!-- 20 张懒加载图片 -->
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=7"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=8"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=9"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=10"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=11"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=12"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=13"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=14"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=15"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=16"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=17"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=18"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=19"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=20"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=21"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=22"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=23"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=24"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=25"
+          alt="示例图"
+        />
+      </div>
+      <div class="image-wrapper">
+        <img
+          class="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="https://picsum.photos/800/400?random=26"
+          alt="示例图"
+        />
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // 当DOM内容加载完成后执行此函数
         const lazyImages = document.querySelectorAll("img.lazy");
-        // 选择所有具有 class="lazy" 的 img 元素，返回一个 NodeList
+        let imageCount = 0;
 
         const imageObserver = new IntersectionObserver((entries, observer) => {
-          // 创建一个新的 IntersectionObserver 实例，用于检测元素是否进入视口
           entries.forEach((entry) => {
-            // 遍历所有被观察的元素
             if (entry.isIntersecting) {
-              //这个属性就是判断浏览器窗口和图片是否交叉，交叉说明就出现在窗口里面了
-              // 检查元素是否与视口交叉（即进入视口）
               const img = entry.target;
-              // 获取当前交叉的目标元素（即 img 元素）
-              img.src = img.getAttribute("data-src");
-              // 将 img 元素的 data-src 属性的值赋给 src 属性，从而开始加载真实图片
+              const realSrc = img.getAttribute("data-src");
+              img.src = realSrc;
               img.removeAttribute("data-src");
-              // 移除 img 元素的 data-src 属性
               img.classList.remove("lazy");
-              // 移除 img 元素的 lazy 类
               observer.unobserve(img);
-              // 停止观察该 img 元素，因为它已经加载完成
+              imageCount++;
+
+              console.log(`✅ 加载第 ${imageCount} 张图片:`);
+              console.log(`  🔗 图片地址: ${realSrc}`);
+              console.log(`  🕒 加载时间: ${new Date().toLocaleTimeString()}`);
+              console.log("----------------------------");
             }
           });
         });
 
         lazyImages.forEach((image) => {
-          // 遍历所有需要懒加载的 img 元素
           imageObserver.observe(image);
-          // 开始观察每个 img 元素
         });
       });
     </script>
