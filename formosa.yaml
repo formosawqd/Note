@@ -1,0 +1,61 @@
+port: 7890
+socks-port: 7891
+mixed-port: 7892
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: false
+external-controller: 127.0.0.1:9090
+
+# ⚠️ 确保 Clash Verge 设置中内核已选为 [Clash Meta] 或 [Mihomo]
+
+proxies:
+  # 1. VLESS + Reality 节点
+  - name: "🇺🇸 Vultr-Reality"
+    type: vless
+    server: 66.42.96.38
+    port: 443
+    uuid: 6af66092-e4e8-4688-8943-61adaac7492a
+    network: tcp
+    tls: true
+    udp: true
+    flow: xtls-rprx-vision
+    servername: www.microsoft.com
+    reality-opts:
+      public-key: aQuqVyECt1dGWnKLPt1EElrQI6aOnFZVk7GrpaXUET0
+      short-id: 16
+    client-fingerprint: chrome # ✅ 这里必须是 client-fingerprint
+
+  # 2. Hysteria 2 节点
+  - name: "🇺🇸 Vultr-H2"
+    type: hysteria2
+    server: 66.42.96.38
+    port: 443
+    password: "formosa88.."
+    sni: www.bing.com
+    skip-cert-verify: true
+    client-fingerprint: chrome # ✅ 修正点：之前是 fingerprint，现在改为 client-fingerprint
+
+proxy-groups:
+  - name: "节点选择"
+    type: select
+    proxies:
+      - "自动选择"
+      - "🇺🇸 Vultr-H2"
+      - "🇺🇸 Vultr-Reality"
+
+  - name: "自动选择"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    proxies:
+      - "🇺🇸 Vultr-H2"
+      - "🇺🇸 Vultr-Reality"
+
+rules:
+  - GEOSITE,category-ads-all,REJECT
+  - GEOSITE,cn,DIRECT
+  - GEOIP,cn,DIRECT
+  - GEOIP,private,DIRECT
+  - MATCH,节点选择
